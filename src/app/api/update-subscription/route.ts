@@ -29,10 +29,11 @@ export async function POST(request: Request) {
     }
 
     const existing = await stripe.subscriptions.retrieve(sub.stripe_subscription_id) as any
-    const existingItemId = existing.items?.data?.[0]?.id
+    const items = existing.items?.data || []
+    const targetItem = items.find((item: any) => item.price?.id === priceId) || items[0]
 
     const updated = await stripe.subscriptions.update(sub.stripe_subscription_id, {
-      items: [{ id: existingItemId, price: priceId }],
+      items: [{ id: targetItem.id, price: priceId }],
       proration_behavior: "always_invoice",
     }) as any
 
