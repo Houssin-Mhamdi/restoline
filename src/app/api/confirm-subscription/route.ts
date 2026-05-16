@@ -34,7 +34,7 @@ export async function POST(request: Request) {
 
     const sub = await stripe.subscriptions.retrieve(subscriptionId as string) as any
 
-    await supabaseAdmin.from("subscriptions").upsert({
+    const { error: upsertError } = await supabaseAdmin.from("subscriptions").upsert({
       user_id: userId,
       stripe_customer_id: customerId as string,
       stripe_subscription_id: subscriptionId as string,
@@ -50,7 +50,9 @@ export async function POST(request: Request) {
         ? new Date(sub.trial_end * 1000).toISOString()
         : null,
       updated_at: new Date().toISOString(),
-    })
+    }, { onConflict: "user_id" })
+
+    if (upsertError) throw upsertError
 
     return NextResponse.json({ success: true }, { headers: corsHeaders })
   } catch (err: any) {
