@@ -32,15 +32,12 @@ export async function POST(request: Request) {
       cancel_url: `${returnUrl}?canceled=true`,
     })
 
-    const plan = priceId === process.env.STRIPE_PRICE_ENTERPRISE ? "enterprise" : "restaurant"
+    const { error: updateErr } = await supabaseAdmin
+      .from("subscriptions")
+      .update({ stripe_customer_id: (session.customer as string) ?? "" })
+      .eq("user_id", userId)
 
-    await supabaseAdmin.from("subscriptions").upsert({
-      user_id: userId,
-      plan,
-      status: "active",
-      stripe_customer_id: (session.customer as string) ?? "",
-      updated_at: new Date().toISOString(),
-    }, { onConflict: "user_id" })
+    if (updateErr) console.error("Failed to update stripe_customer_id:", updateErr)
 
     return NextResponse.json({ url: session.url }, { headers: corsHeaders })
   } catch (err: any) {
