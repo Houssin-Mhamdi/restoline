@@ -27,11 +27,13 @@ export async function POST(request: Request) {
 
         if (userId && subscriptionId) {
           const sub = await stripe.subscriptions.retrieve(subscriptionId as string) as any
+          const priceId = sub.items?.data?.[0]?.price?.id
+          const plan = priceId === process.env.STRIPE_PRICE_ENTERPRISE ? "enterprise" : "restaurant"
           const { error: upsertError } = await supabaseAdmin.from("subscriptions").upsert({
             user_id: userId,
             stripe_customer_id: customerId as string,
             stripe_subscription_id: subscriptionId as string,
-            plan: sub.items?.data?.[0]?.price?.metadata?.plan || "restaurant",
+            plan,
             status: sub.status,
             current_period_start: sub.current_period_start
               ? new Date(sub.current_period_start * 1000).toISOString()
@@ -60,10 +62,12 @@ export async function POST(request: Request) {
           .single()
 
         if (subs?.user_id) {
+          const priceId = sub.items?.data?.[0]?.price?.id
+          const plan = priceId === process.env.STRIPE_PRICE_ENTERPRISE ? "enterprise" : "restaurant"
           await supabaseAdmin
             .from("subscriptions")
             .update({
-              plan: sub.items?.data?.[0]?.price?.metadata?.plan || "restaurant",
+              plan,
               status: sub.status,
               current_period_start: sub.current_period_start
                 ? new Date(sub.current_period_start * 1000).toISOString()
