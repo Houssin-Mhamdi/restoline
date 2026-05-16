@@ -28,8 +28,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No Stripe subscription found" }, { status: 400, headers: corsHeaders })
     }
 
+    const existing = await stripe.subscriptions.retrieve(sub.stripe_subscription_id) as any
+    const existingItemId = existing.items?.data?.[0]?.id
+
     const updated = await stripe.subscriptions.update(sub.stripe_subscription_id, {
-      items: [{ price: priceId }],
+      items: [{ id: existingItemId, price: priceId }],
       proration_behavior: "always_invoice",
     }) as any
 
