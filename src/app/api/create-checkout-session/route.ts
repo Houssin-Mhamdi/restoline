@@ -25,7 +25,6 @@ export async function POST(request: Request) {
       customer_email: email,
       line_items: [{ price: priceId, quantity: 1 }],
       subscription_data: {
-        trial_period_days: 14,
         metadata: { userId },
       },
       success_url: `${returnUrl}?session_id={CHECKOUT_SESSION_ID}`,
