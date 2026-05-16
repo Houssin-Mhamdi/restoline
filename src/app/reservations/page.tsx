@@ -1,34 +1,21 @@
-"use client"
+import type { Metadata } from "next"
+import ReservationsClient from "./ReservationsClient"
+import { getSeoSettings } from "@/lib/seo"
 
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
-import HeroBanner from "@/components/HeroBanner"
-import BookingForm from "@/components/BookingForm"
-import ExperienceInfo from "@/components/ExperienceInfo"
-import BespeakExperiences from "@/components/BespeakExperiences"
-import type { NavLink } from "@/components/Navbar"
-
-const NAV_LINKS: NavLink[] = [
-  { label: "STORY", href: "/" },
-  { label: "MENU", href: "/#menu" },
-  { label: "RESERVATIONS", href: "/reservations", active: true },
-  { label: "GALLERY", href: "/#gallery" },
-]
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSeoSettings("reservations")
+  return {
+    title: seo?.metaTitle || "Reservations — Desplain",
+    description: seo?.metaDescription || "Secure your place at our table for an unforgettable evening.",
+    keywords: seo?.keywords || "reservations, booking, restaurant",
+    openGraph: {
+      title: seo?.ogTitle || seo?.metaTitle || "Reservations — Desplain",
+      description: seo?.ogDescription || seo?.metaDescription || "Secure your place at our table.",
+      images: seo?.ogImage ? [{ url: seo.ogImage }] : [],
+    },
+  }
+}
 
 export default function ReservationsPage() {
-  return (
-    <>
-      <Navbar links={NAV_LINKS} />
-      <main>
-        <HeroBanner
-          title="RESERVATIONS"
-          subtitle="An intimate journey through culinary artistry awaits. Secure your place at our table."
-        />
-        <BookingForm />
-        <ExperienceInfo />
-        <BespeakExperiences />
-      </main>
-      <Footer />
-    </>
-  )
+  return <ReservationsClient />
 }

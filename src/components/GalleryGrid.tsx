@@ -1,5 +1,7 @@
 "use client"
 
+import Image from "next/image"
+
 interface GalleryItem {
   imageUrl: string
   alt: string
@@ -58,17 +60,20 @@ const GALLERY_ITEMS: GalleryItem[] = [
 
 export default function GalleryGrid({ items = GALLERY_ITEMS }: { items?: GalleryItem[] }) {
   return (
-    <section className="max-w-[1280px] mx-auto px-margin-desktop">
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter auto-rows-[280px]">
+    <section className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter auto-rows-[200px] md:auto-rows-[280px]">
         {items.map((item) => (
           <div
             key={item.spanClasses + item.imageUrl.slice(-20)}
             className={`${item.spanClasses} group relative overflow-hidden bg-surface-container`}
           >
-            <img
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
+            <Image
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
               alt={item.alt}
               src={item.imageUrl}
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              loading="lazy"
             />
             {item.overlay && (
               <div

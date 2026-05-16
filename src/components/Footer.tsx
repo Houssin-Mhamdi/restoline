@@ -33,7 +33,7 @@ export default function Footer({
 }: FooterProps) {
   return (
     <footer className="bg-surface-container-lowest border-t border-outline-variant/20">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter px-margin-desktop py-section-gap max-w-[1280px] mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter px-margin-mobile md:px-margin-desktop py-section-gap max-w-[1280px] mx-auto">
         {/* Brand Column */}
         <div className="flex flex-col gap-4">
           <div className="font-headline-md text-headline-md text-primary">{restaurantName}</div>

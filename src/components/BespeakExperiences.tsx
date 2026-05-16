@@ -60,8 +60,8 @@ interface BespeakExperiencesProps {
 function ExperienceCard({ icon, title, description, cta, variant }: ExperienceCard) {
   const containerClass =
     variant === "accent"
-      ? "bg-surface-container-highest p-10 border border-outline-variant/10 flex flex-col justify-between"
-      : "md:col-span-2 bg-background p-10 border border-outline-variant/10 flex flex-col justify-between hover:border-primary/40 transition-colors duration-500"
+      ? "bg-surface-container-highest p-6 md:p-10 border border-outline-variant/10 flex flex-col justify-between"
+      : "md:col-span-2 bg-background p-6 md:p-10 border border-outline-variant/10 flex flex-col justify-between hover:border-primary/40 transition-colors duration-500"
 
   return (
     <div className={containerClass}>
@@ -91,7 +91,7 @@ export default function BespeakExperiences({
 }: BespeakExperiencesProps) {
   return (
     <section className="bg-surface-container-low py-section-gap">
-      <div className="max-w-[1280px] mx-auto px-margin-desktop">
+      <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
         <div className="text-center mb-16">
           <h2 className="font-headline-lg text-headline-lg text-on-surface mb-4">{title}</h2>
           <p className="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto">

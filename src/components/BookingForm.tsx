@@ -18,8 +18,8 @@ export default function BookingForm() {
 
   return (
     <>
-      <section className="max-w-[1280px] mx-auto px-margin-desktop -mt-24 relative z-20 mb-section-gap">
-        <div className="glass-panel p-12 shadow-2xl">
+      <section className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop -mt-24 relative z-20 mb-section-gap">
+        <div className="glass-panel p-6 md:p-12 shadow-2xl">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter items-end">
             {/* Guests */}
             <div className="flex flex-col gap-2 relative">

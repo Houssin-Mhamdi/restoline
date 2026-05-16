@@ -1,5 +1,7 @@
 "use client"
 
+import Image from "next/image"
+
 interface PricingRow {
   label: string
   price: string
@@ -24,13 +26,16 @@ export default function ExperienceInfo({
   ],
 }: ExperienceInfoProps) {
   return (
-    <section className="max-w-[1280px] mx-auto px-margin-desktop mb-section-gap">
+    <section className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop mb-section-gap">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-section-gap items-center">
-        <div className="order-2 lg:order-1">
-          <img
-            className="w-full aspect-[4/5] object-cover border border-outline-variant/20"
+        <div className="relative order-2 lg:order-1 aspect-[4/5] w-full">
+          <Image
+            fill
+            className="object-cover border border-outline-variant/20"
             alt={title}
             src={imageUrl}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            loading="lazy"
           />
         </div>
         <div className="order-1 lg:order-2 space-y-8">

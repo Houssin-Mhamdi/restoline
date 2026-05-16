@@ -2,8 +2,19 @@ import type { Metadata } from "next"
 import "@/app/globals.css"
 
 export const metadata: Metadata = {
-  title: "RestoCMS - Menu",
-  description: "Restaurant menu",
+  title: {
+    default: "Desplain — Culinary Artistry Redefined",
+    template: "%s — Desplain",
+  },
+  description:
+    "Experience the pinnacle of culinary artistry at Desplain. Rare ingredients, meticulous preparation, and an atmosphere of uncompromising elegance.",
+  openGraph: {
+    title: "Desplain — Culinary Artistry Redefined",
+    description:
+      "Experience the pinnacle of culinary artistry at Desplain. Rare ingredients, meticulous preparation, and an atmosphere of uncompromising elegance.",
+    type: "website",
+    siteName: "Desplain",
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
