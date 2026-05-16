@@ -24,6 +24,7 @@ export async function POST(request: Request) {
       payment_method_types: ["card"],
       customer_email: email,
       line_items: [{ price: priceId, quantity: 1 }],
+      metadata: { userId },
       subscription_data: {
         metadata: { userId },
       },
