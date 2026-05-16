@@ -52,7 +52,60 @@ export async function POST(request: Request) {
         break
       }
 
-      case "customer.subscription.updated":
+      case "customer.subscription.updated": {
+        const sub = event.data.object as any
+        const { data: subs } = await supabaseAdmin
+          .from("subscriptions")
+          .select("user_id")
+          .eq("stripe_subscription_id", sub.id)
+          .single()
+
+        if (subs?.user_id) {
+          if (["canceled", "incomplete_expired", "unpaid"].includes(sub.status)) {
+            await supabaseAdmin
+              .from("subscriptions")
+              .update({
+                plan: "free",
+                status: sub.status,
+                current_period_end: sub.current_period_end
+                  ? new Date(sub.current_period_end * 1000).toISOString()
+                  : null,
+                updated_at: new Date().toISOString(),
+              })
+              .eq("user_id", subs.user_id)
+          } else if (sub.cancel_at_period_end) {
+            await supabaseAdmin
+              .from("subscriptions")
+              .update({
+                status: "canceled",
+                current_period_end: sub.current_period_end
+                  ? new Date(sub.current_period_end * 1000).toISOString()
+                  : null,
+                updated_at: new Date().toISOString(),
+              })
+              .eq("user_id", subs.user_id)
+          } else {
+            const priceId = sub.items?.data?.[0]?.price?.id
+            const plan = priceId === process.env.STRIPE_PRICE_ENTERPRISE ? "enterprise" : "restaurant"
+            await supabaseAdmin
+              .from("subscriptions")
+              .update({
+                plan,
+                status: sub.status,
+                current_period_start: sub.current_period_start
+                  ? new Date(sub.current_period_start * 1000).toISOString()
+                  : null,
+                current_period_end: sub.current_period_end
+                  ? new Date(sub.current_period_end * 1000).toISOString()
+                  : null,
+                updated_at: new Date().toISOString(),
+              })
+              .eq("user_id", subs.user_id)
+          }
+        }
+        break
+      }
+
       case "customer.subscription.deleted": {
         const sub = event.data.object as any
         const { data: subs } = await supabaseAdmin
@@ -62,22 +115,38 @@ export async function POST(request: Request) {
           .single()
 
         if (subs?.user_id) {
-          const priceId = sub.items?.data?.[0]?.price?.id
-          const plan = priceId === process.env.STRIPE_PRICE_ENTERPRISE ? "enterprise" : "restaurant"
           await supabaseAdmin
             .from("subscriptions")
             .update({
-              plan,
-              status: sub.status,
-              current_period_start: sub.current_period_start
-                ? new Date(sub.current_period_start * 1000).toISOString()
-                : null,
-              current_period_end: sub.current_period_end
-                ? new Date(sub.current_period_end * 1000).toISOString()
-                : null,
+              plan: "free",
+              status: "canceled",
               updated_at: new Date().toISOString(),
             })
             .eq("user_id", subs.user_id)
+        }
+        break
+      }
+
+      case "invoice.payment_failed": {
+        const invoice = event.data.object as any
+        const subscriptionId = invoice.subscription
+
+        if (subscriptionId) {
+          const { data: subs } = await supabaseAdmin
+            .from("subscriptions")
+            .select("user_id")
+            .eq("stripe_subscription_id", subscriptionId)
+            .single()
+
+          if (subs?.user_id) {
+            await supabaseAdmin
+              .from("subscriptions")
+              .update({
+                status: "past_due",
+                updated_at: new Date().toISOString(),
+              })
+              .eq("user_id", subs.user_id)
+          }
         }
         break
       }
