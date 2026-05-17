@@ -27,12 +27,13 @@ export default function Navbar({
   slug,
 }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const prefix = slug ? `/${slug}` : ""
 
-  const navLinks = links.map((link) => ({
-    ...link,
-    href: link.href.startsWith("/") ? `${prefix}${link.href}` : link.href,
-  }))
+  const navLinks = slug
+    ? links.map((link) => ({
+        ...link,
+        href: link.href.startsWith("/") ? `/${slug}${link.href}` : link.href,
+      }))
+    : links
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-outline-variant/30 transition-all duration-500">
