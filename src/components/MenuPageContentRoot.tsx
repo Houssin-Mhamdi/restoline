@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState, useMemo } from "react"
-import { useRestaurant } from "@/lib/restaurant-context"
 import Navbar from "@/components/Navbar"
 import MenuHeader from "@/components/MenuHeader"
 import MenuGrid from "@/components/MenuGrid"
@@ -9,6 +8,13 @@ import MenuSignatures from "@/components/MenuSignatures"
 import ErrorBoundary from "@/components/ErrorBoundary"
 import LoadingSkeleton from "@/components/LoadingSkeleton"
 import Footer from "@/components/Footer"
+
+const NAV_LINKS = [
+  { label: "STORY", href: "/story" },
+  { label: "MENU", href: "/menu", active: true },
+  { label: "RESERVATIONS", href: "/reservations" },
+  { label: "GALLERY", href: "/gallery" },
+]
 
 interface Product {
   id: string
@@ -36,14 +42,13 @@ function groupBy<T>(items: T[], key: keyof T): Record<string, T[]> {
   )
 }
 
-export default function MenuPageContent() {
-  const restaurant = useRestaurant()
+export default function MenuPageContentRoot() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    fetch(`/api/products?restaurant_id=${restaurant.id}`)
+    fetch("/api/products")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch")
         return res.json()
@@ -77,14 +82,7 @@ export default function MenuPageContent() {
   if (error) {
     return (
       <ErrorBoundary>
-        <Navbar
-          links={[
-            { label: "STORY", href: "/story" },
-            { label: "MENU", href: "/menu", active: true },
-            { label: "RESERVATIONS", href: "/reservations" },
-            { label: "GALLERY", href: "/gallery" },
-          ]}
-        />
+        <Navbar links={NAV_LINKS} />
         <main className="pt-[80px] md:pt-[160px] pb-section-gap min-h-screen flex flex-col items-center justify-center text-center px-4">
           <span className="material-symbols-outlined text-5xl text-primary mb-4">error_outline</span>
           <h2 className="font-headline-md text-headline-md mb-2">Failed to load menu</h2>
@@ -118,14 +116,7 @@ export default function MenuPageContent() {
 
   return (
     <ErrorBoundary>
-      <Navbar
-        links={[
-          { label: "STORY", href: "/" },
-          { label: "MENU", href: "/menu", active: true },
-          { label: "RESERVATIONS", href: "/reservations" },
-          { label: "GALLERY", href: "/gallery" },
-        ]}
-      />
+      <Navbar links={NAV_LINKS} />
       <main className="pt-[80px] md:pt-[160px] pb-section-gap">
         <MenuHeader />
         {Object.entries(groupedByCategory).map(([category, items]) => (

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useContext } from "react"
+import Link from "next/link"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import GalleryGrid from "@/components/GalleryGrid"
@@ -10,7 +11,7 @@ import { RestaurantContext } from "@/lib/restaurant-context"
 import type { NavLink } from "@/components/Navbar"
 
 const NAV_LINKS: NavLink[] = [
-  { label: "STORY", href: "/" },
+  { label: "STORY", href: "/story" },
   { label: "MENU", href: "/menu" },
   { label: "RESERVATIONS", href: "/reservations" },
   { label: "GALLERY", href: "/gallery", active: true },
@@ -50,13 +51,13 @@ export default function GalleryClient() {
             <section className="mt-section-gap px-margin-mobile md:px-margin-desktop max-w-[1280px] mx-auto text-center">
               <div className="border-t border-outline-variant/30 pt-section-gap">
                 <h2 className="font-headline-lg text-headline-lg mb-8">TASTE THE NARRATIVE</h2>
-                <a
+                <Link
                   className="inline-flex items-center gap-4 text-primary font-label-lg text-label-lg hover:gap-6 transition-all duration-300"
-                  href="/reservations"
+                  href={restaurantCtx?.slug ? `/${restaurantCtx.slug}/reservations` : "/reservations"}
                 >
                   RESERVE YOUR EXPERIENCE
                   <span className="material-symbols-outlined">arrow_forward</span>
-                </a>
+                </Link>
               </div>
             </section>
           </>

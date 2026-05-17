@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useContext } from "react"
+import Link from "next/link"
 import Image from "next/image"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
@@ -79,18 +80,18 @@ export default function MenuPage({ data = DEFAULT_DATA }: { data?: MenuData }) {
                 {data.heroTitle}
               </h1>
               <div className="flex flex-col md:flex-row gap-6 justify-center">
-                <a
-                  href="/reservations"
+                <Link
+                  href={restaurantCtx?.slug ? `/${restaurantCtx.slug}/reservations` : "/reservations"}
                   className="bg-primary text-on-primary font-label-lg text-label-lg px-12 py-4 hover:opacity-90 transition-all uppercase inline-block"
                 >
                   BOOK A TABLE
-                </a>
-                <a
-                  href="/menu"
+                </Link>
+                <Link
+                  href={restaurantCtx?.slug ? `/${restaurantCtx.slug}/menu` : "/menu"}
                   className="border border-primary text-primary font-label-lg text-label-lg px-12 py-4 hover:bg-primary/10 transition-all uppercase inline-block"
                 >
                   VIEW MENU
-                </a>
+                </Link>
               </div>
             </div>
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
@@ -120,12 +121,12 @@ export default function MenuPage({ data = DEFAULT_DATA }: { data?: MenuData }) {
                   kitchen, led by Master Chef Julian Desplain, operates with the precision of an atelier
                   and the soul of a poet.
                 </p>
-                <a
+                <Link
                   className="font-label-lg text-label-lg text-primary border-b border-primary/40 pb-1 hover:border-primary transition-all uppercase"
-                  href="#"
+                  href={restaurantCtx?.slug ? `/${restaurantCtx.slug}/story` : "/story"}
                 >
                   READ OUR STORY
-                </a>
+                </Link>
               </div>
               <div className="relative order-1 md:order-2 h-[400px] md:h-[600px]">
                 <Image
@@ -200,12 +201,12 @@ export default function MenuPage({ data = DEFAULT_DATA }: { data?: MenuData }) {
                   </div>
                 </div>
                 <div className="mt-section-gap text-center">
-                  <a
-                    href="/menu"
-                    className="border border-primary text-primary font-label-lg text-label-lg px-12 py-4 hover:bg-primary hover:text-on-primary transition-all duration-300 uppercase inline-block"
-                  >
-                    EXPLORE FULL MENU
-                  </a>
+                <Link
+                  href={restaurantCtx?.slug ? `/${restaurantCtx.slug}/menu` : "/menu"}
+                  className="border border-primary text-primary font-label-lg text-label-lg px-12 py-4 hover:bg-primary hover:text-on-primary transition-all duration-300 uppercase inline-block"
+                >
+                  EXPLORE FULL MENU
+                </Link>
                 </div>
               </div>
             </section>
@@ -276,12 +277,12 @@ export default function MenuPage({ data = DEFAULT_DATA }: { data?: MenuData }) {
                   Experience the pinnacle of culinary artistry. Reservations are highly recommended and
                   can be made up to three months in advance.
                 </p>
-                <a
-                  href="/reservations"
+                <Link
+                  href={restaurantCtx?.slug ? `/${restaurantCtx.slug}/reservations` : "/reservations"}
                   className="block w-full bg-primary text-on-primary font-label-lg text-label-lg py-5 hover:opacity-90 transition-all uppercase text-center"
                 >
                   BOOK A TABLE
-                </a>
+                </Link>
               </div>
             </section>
           </main>

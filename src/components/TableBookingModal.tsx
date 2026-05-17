@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
-import { useRestaurant } from "@/lib/restaurant-context"
+import { useEffect, useState, useCallback, useContext } from "react"
+import { RestaurantContext } from "@/lib/restaurant-context"
 import { Button } from "@/components/ui/button"
 
 interface RestaurantTable {
@@ -23,7 +23,7 @@ interface TableBookingModalProps {
 }
 
 export default function TableBookingModal({ open, onClose, guests, date, time }: TableBookingModalProps) {
-  const restaurant = useRestaurant()
+  const restaurantCtx = useContext(RestaurantContext)
   const [tables, setTables] = useState<RestaurantTable[]>([])
   const [selectedTable, setSelectedTable] = useState<RestaurantTable | null>(null)
   const [step, setStep] = useState<Step>("select")
@@ -34,13 +34,14 @@ export default function TableBookingModal({ open, onClose, guests, date, time }:
   const [error, setError] = useState("")
 
   const fetchTables = useCallback(async () => {
+    if (!restaurantCtx) return
     try {
-      const res = await fetch(`/api/tables?restaurant_id=${restaurant.id}`)
+      const res = await fetch(`/api/tables?restaurant_id=${restaurantCtx.id}`)
       const data = await res.json()
       if (data.tables) setTables(data.tables)
     } catch {
     }
-  }, [restaurant.id])
+  }, [restaurantCtx?.id])
 
   useEffect(() => {
     if (open) {
@@ -55,6 +56,10 @@ export default function TableBookingModal({ open, onClose, guests, date, time }:
   }, [open, fetchTables])
 
   const handleSubmit = async () => {
+    if (!restaurantCtx) {
+      setError("No restaurant selected")
+      return
+    }
     if (!name.trim() || !phone.trim() || !email.trim()) {
       setError("Please fill in all fields")
       return
@@ -75,8 +80,8 @@ export default function TableBookingModal({ open, onClose, guests, date, time }:
           date,
           time,
           guests,
-          restaurantId: restaurant.id,
-          restaurantName: restaurant.name,
+          restaurantId: restaurantCtx.id,
+          restaurantName: restaurantCtx.name,
         }),
       })
       const data = await res.json()
@@ -122,7 +127,7 @@ export default function TableBookingModal({ open, onClose, guests, date, time }:
             <>
               {tables.length === 0 ? (
                 <p className="text-on-surface-variant text-center py-12 font-body-md text-body-md">
-                  No tables available at the moment.
+                  {restaurantCtx ? "No tables available at the moment." : "Please visit a restaurant page to book a table."}
                 </p>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-6">
