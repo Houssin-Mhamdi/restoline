@@ -1,11 +1,12 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import GalleryGrid from "@/components/GalleryGrid"
 import ErrorBoundary from "@/components/ErrorBoundary"
 import LoadingSkeleton from "@/components/LoadingSkeleton"
+import { RestaurantContext } from "@/lib/restaurant-context"
 import type { NavLink } from "@/components/Navbar"
 
 const NAV_LINKS: NavLink[] = [
@@ -17,6 +18,7 @@ const NAV_LINKS: NavLink[] = [
 
 export default function GalleryClient() {
   const [ready, setReady] = useState(false)
+  const restaurantCtx = useContext(RestaurantContext)
 
   useEffect(() => {
     setReady(true)
@@ -24,7 +26,7 @@ export default function GalleryClient() {
 
   return (
     <ErrorBoundary>
-      <Navbar links={NAV_LINKS} />
+      <Navbar links={NAV_LINKS} slug={restaurantCtx?.slug} />
       <main className="pt-[80px] md:pt-[160px] pb-section-gap">
         {!ready ? (
           <LoadingSkeleton />
