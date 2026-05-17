@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { getRestaurantBySlug } from "@/lib/get-restaurant"
 import { RestaurantProvider } from "@/lib/restaurant-context"
-import ReservationsClient from "@/app/reservations/ReservationsClient"
+import ReservationsClient from "@/components/ReservationsClient"
 import { getSeoSettings } from "@/lib/seo"
 import type { Metadata } from "next"
 
