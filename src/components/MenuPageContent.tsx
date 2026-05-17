@@ -84,6 +84,8 @@ export default function MenuPageContent() {
             { label: "RESERVATIONS", href: "/reservations" },
             { label: "GALLERY", href: "/gallery" },
           ]}
+          slug={restaurant.slug}
+          logoText={restaurant.name}
         />
         <main className="pt-[80px] md:pt-[160px] pb-section-gap min-h-screen flex flex-col items-center justify-center text-center px-4">
           <span className="material-symbols-outlined text-5xl text-primary mb-4">error_outline</span>
@@ -118,15 +120,17 @@ export default function MenuPageContent() {
 
   return (
     <ErrorBoundary>
-      <Navbar
-        links={[
-          { label: "STORY", href: "/" },
-          { label: "MENU", href: "/menu", active: true },
-          { label: "RESERVATIONS", href: "/reservations" },
-          { label: "GALLERY", href: "/gallery" },
-        ]}
-      />
-      <main className="pt-[80px] md:pt-[160px] pb-section-gap">
+        <Navbar
+          links={[
+            { label: "STORY", href: "/story" },
+            { label: "MENU", href: "/menu", active: true },
+            { label: "RESERVATIONS", href: "/reservations" },
+            { label: "GALLERY", href: "/gallery" },
+          ]}
+          slug={restaurant.slug}
+          logoText={restaurant.name}
+        />
+        <main className="pt-[80px] md:pt-[160px] pb-section-gap">
         <MenuHeader />
         {Object.entries(groupedByCategory).map(([category, items]) => (
           <MenuGrid

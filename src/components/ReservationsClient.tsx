@@ -29,7 +29,7 @@ export default function ReservationsClient() {
 
   return (
     <ErrorBoundary>
-      <Navbar links={NAV_LINKS} slug={restaurant.slug} />
+      <Navbar links={NAV_LINKS} slug={restaurant.slug} logoText={restaurant.name} />
       <main>
         {!ready ? (
           <LoadingSkeleton className="min-h-screen" />

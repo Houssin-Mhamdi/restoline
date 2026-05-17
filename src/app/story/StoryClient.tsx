@@ -26,7 +26,7 @@ export default function StoryClient() {
 
   return (
     <ErrorBoundary>
-      <Navbar links={NAV_LINKS} slug={restaurantCtx?.slug} />
+      <Navbar links={NAV_LINKS} slug={restaurantCtx?.slug} logoText={restaurantCtx?.name} />
       <main className="pt-[80px] md:pt-[160px] pb-section-gap">
         {!ready ? (
           <LoadingSkeleton className="min-h-screen" />
