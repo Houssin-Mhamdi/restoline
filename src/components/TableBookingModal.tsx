@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, useCallback } from "react"
+import { useRestaurant } from "@/lib/restaurant-context"
 import { Button } from "@/components/ui/button"
 
 interface RestaurantTable {
@@ -22,6 +23,7 @@ interface TableBookingModalProps {
 }
 
 export default function TableBookingModal({ open, onClose, guests, date, time }: TableBookingModalProps) {
+  const restaurant = useRestaurant()
   const [tables, setTables] = useState<RestaurantTable[]>([])
   const [selectedTable, setSelectedTable] = useState<RestaurantTable | null>(null)
   const [step, setStep] = useState<Step>("select")
@@ -33,13 +35,12 @@ export default function TableBookingModal({ open, onClose, guests, date, time }:
 
   const fetchTables = useCallback(async () => {
     try {
-      const res = await fetch("/api/tables")
+      const res = await fetch(`/api/tables?restaurant_id=${restaurant.id}`)
       const data = await res.json()
       if (data.tables) setTables(data.tables)
     } catch {
-      // silently fail
     }
-  }, [])
+  }, [restaurant.id])
 
   useEffect(() => {
     if (open) {
@@ -74,6 +75,8 @@ export default function TableBookingModal({ open, onClose, guests, date, time }:
           date,
           time,
           guests,
+          restaurantId: restaurant.id,
+          restaurantName: restaurant.name,
         }),
       })
       const data = await res.json()

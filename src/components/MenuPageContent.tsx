@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, useMemo } from "react"
+import { useRestaurant } from "@/lib/restaurant-context"
 import Navbar from "@/components/Navbar"
 import MenuHeader from "@/components/MenuHeader"
 import MenuGrid from "@/components/MenuGrid"
@@ -36,12 +37,13 @@ function groupBy<T>(items: T[], key: keyof T): Record<string, T[]> {
 }
 
 export default function MenuPageContent() {
+  const restaurant = useRestaurant()
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    fetch("/api/products")
+    fetch(`/api/products?restaurant_id=${restaurant.id}`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch")
         return res.json()

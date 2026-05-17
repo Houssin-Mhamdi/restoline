@@ -1,12 +1,21 @@
 import { NextResponse } from "next/server"
 import { supabaseAdmin } from "@/lib/supabase-admin"
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const { data, error } = await supabaseAdmin
+    const { searchParams } = new URL(request.url)
+    const restaurantId = searchParams.get("restaurant_id")
+
+    let query = supabaseAdmin
       .from("restaurant_tables")
       .select("*")
       .order("number", { ascending: true })
+
+    if (restaurantId) {
+      query = query.eq("restaurant_id", restaurantId)
+    }
+
+    const { data, error } = await query
 
     if (error) {
       return NextResponse.json({ tables: [], error: error.message }, { status: 200 })
