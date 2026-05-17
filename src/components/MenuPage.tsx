@@ -45,6 +45,7 @@ const DEFAULT_DATA: MenuData = {
 
 export default function MenuPage({ data = DEFAULT_DATA }: { data?: MenuData }) {
   const [ready, setReady] = useState(false)
+  const restaurantCtx = useContext(RestaurantContext)
 
   useEffect(() => {
     setReady(true)
@@ -52,7 +53,7 @@ export default function MenuPage({ data = DEFAULT_DATA }: { data?: MenuData }) {
 
   return (
     <ErrorBoundary>
-      <Navbar logoText={data.restaurantName} />
+      <Navbar logoText={data.restaurantName} slug={restaurantCtx?.slug} />
 
       {!ready ? (
         <LoadingSkeleton className="min-h-screen" />

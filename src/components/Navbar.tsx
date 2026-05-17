@@ -11,6 +11,7 @@ export interface NavLink {
 interface NavbarProps {
   logoText?: string
   links?: NavLink[]
+  slug?: string
 }
 
 const DEFAULT_LINKS: NavLink[] = [
@@ -23,8 +24,15 @@ const DEFAULT_LINKS: NavLink[] = [
 export default function Navbar({
   logoText = "DESPLAIN",
   links = DEFAULT_LINKS,
+  slug,
 }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const prefix = slug ? `/${slug}` : ""
+
+  const navLinks = links.map((link) => ({
+    ...link,
+    href: link.href.startsWith("/") ? `${prefix}${link.href}` : link.href,
+  }))
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-outline-variant/30 transition-all duration-500">
@@ -33,36 +41,36 @@ export default function Navbar({
           {logoText}
         </span>
         <div className="hidden md:flex items-center gap-gutter">
-          {links.map((link) => (
-            <a
-              key={link.href}
-              className={
-                link.active
-                  ? "font-label-lg text-label-lg text-primary border-b border-primary pb-1"
-                  : "font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors duration-300"
-              }
-              href={link.href}
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) => (
+              <a
+                key={link.href}
+                className={
+                  link.active
+                    ? "font-label-lg text-label-lg text-primary border-b border-primary pb-1"
+                    : "font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors duration-300"
+                }
+                href={link.href}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+          <button className="hidden md:inline-block bg-primary text-on-primary font-label-lg text-label-lg px-6 py-3 hover:opacity-80 transition-opacity uppercase">
+            BOOK TABLE
+          </button>
+          <button
+            className="md:hidden text-primary"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            <span className="material-symbols-outlined text-3xl">
+              {mobileOpen ? "close" : "menu"}
+            </span>
+          </button>
         </div>
-        <button className="hidden md:inline-block bg-primary text-on-primary font-label-lg text-label-lg px-6 py-3 hover:opacity-80 transition-opacity uppercase">
-          BOOK TABLE
-        </button>
-        <button
-          className="md:hidden text-primary"
-          onClick={() => setMobileOpen(!mobileOpen)}
-        >
-          <span className="material-symbols-outlined text-3xl">
-            {mobileOpen ? "close" : "menu"}
-          </span>
-        </button>
-      </div>
-      {mobileOpen && (
-        <div className="md:hidden border-t border-outline-variant/30 bg-background/95 backdrop-blur-md">
-          <div className="flex flex-col px-margin-mobile py-6 gap-4">
-            {links.map((link) => (
+        {mobileOpen && (
+          <div className="md:hidden border-t border-outline-variant/30 bg-background/95 backdrop-blur-md">
+            <div className="flex flex-col px-margin-mobile py-6 gap-4">
+              {navLinks.map((link) => (
               <a
                 key={link.href}
                 className={

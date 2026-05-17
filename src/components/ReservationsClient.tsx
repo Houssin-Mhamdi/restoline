@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRestaurant } from "@/lib/restaurant-context"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import HeroBanner from "@/components/HeroBanner"
@@ -20,6 +21,7 @@ const NAV_LINKS: NavLink[] = [
 
 export default function ReservationsClient() {
   const [ready, setReady] = useState(false)
+  const restaurant = useRestaurant()
 
   useEffect(() => {
     setReady(true)
@@ -27,7 +29,7 @@ export default function ReservationsClient() {
 
   return (
     <ErrorBoundary>
-      <Navbar links={NAV_LINKS} />
+      <Navbar links={NAV_LINKS} slug={restaurant.slug} />
       <main>
         {!ready ? (
           <LoadingSkeleton className="min-h-screen" />
