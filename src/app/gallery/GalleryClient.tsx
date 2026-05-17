@@ -11,7 +11,7 @@ import type { NavLink } from "@/components/Navbar"
 
 const NAV_LINKS: NavLink[] = [
   { label: "STORY", href: "/" },
-  { label: "MENU", href: "/#menu" },
+  { label: "MENU", href: "/menu" },
   { label: "RESERVATIONS", href: "/reservations" },
   { label: "GALLERY", href: "/gallery", active: true },
 ]

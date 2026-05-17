@@ -14,9 +14,9 @@ import type { NavLink } from "@/components/Navbar"
 
 const NAV_LINKS: NavLink[] = [
   { label: "STORY", href: "/" },
-  { label: "MENU", href: "/#menu" },
+  { label: "MENU", href: "/menu" },
   { label: "RESERVATIONS", href: "/reservations", active: true },
-  { label: "GALLERY", href: "/#gallery" },
+  { label: "GALLERY", href: "/gallery" },
 ]
 
 export default function ReservationsClient() {

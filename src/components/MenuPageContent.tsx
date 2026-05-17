@@ -79,7 +79,7 @@ export default function MenuPageContent() {
       <ErrorBoundary>
         <Navbar
           links={[
-            { label: "STORY", href: "#story" },
+            { label: "STORY", href: "/" },
             { label: "MENU", href: "/menu", active: true },
             { label: "RESERVATIONS", href: "/reservations" },
             { label: "GALLERY", href: "/gallery" },
@@ -120,7 +120,7 @@ export default function MenuPageContent() {
     <ErrorBoundary>
       <Navbar
         links={[
-          { label: "STORY", href: "#story" },
+          { label: "STORY", href: "/" },
           { label: "MENU", href: "/menu", active: true },
           { label: "RESERVATIONS", href: "/reservations" },
           { label: "GALLERY", href: "/gallery" },
